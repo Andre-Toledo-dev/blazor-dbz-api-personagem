@@ -1,0 +1,83 @@
+@page "/dragonball"
+@rendermode InteractiveServer
+@using System.Net.Http.Json
+@inject HttpClient Http
+
+<h3>Informações do Personagem</h3>
+
+<input type="number" @bind="id" min="1" />
+<button @onclick="Buscar">Buscar</button>
+
+@if (carregando)
+{
+    <p>Carregando...</p>
+}
+else if (personagem != null)
+{
+    <p><b>Nome:</b> @personagem.Name</p>
+    <p><b>Planeta de Origem:</b> @personagem.OriginPlanet?.Name</p>
+
+    <h4>Transformações:</h4>
+    @if (personagem.Transformations?.Count > 0)
+    {
+        <ul>
+            @foreach (var t in personagem.Transformations)
+            {
+                <li>@t.Name</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Sem transformações cadastradas.</p>
+    }
+}
+else if (erro != "")
+{
+    <p>@erro</p>
+}
+
+@code {
+    private int id = 1;
+    private Personagem? personagem;
+    private string erro = "";
+    private bool carregando;
+
+    private async Task Buscar()
+    {
+        personagem = null;
+        erro = "";
+        carregando = true;
+
+        try
+        {
+            personagem = await Http.GetFromJsonAsync<Personagem>(
+                $"https://dragonball-api.com/api/characters/{id}");
+        }
+        catch
+        {
+            erro = "Não foi possível encontrar o personagem.";
+        }
+        finally
+        {
+            carregando = false;
+        }
+    }
+
+    public class Personagem
+    {
+        public string? Name { get; set; }
+        public Planeta? OriginPlanet { get; set; }
+        public List<Transformacao>? Transformations { get; set; }
+    }
+
+    public class Planeta
+    {
+        public string? Name { get; set; }
+    }
+
+    public class Transformacao
+    {
+        public string? Name { get; set; }
+    }
+}

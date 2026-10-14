@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "DanQHsX3NEU=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\a8330\\BlazorDbzPersonagem\\BlazorDbzPersonagem.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\a8330\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.12\\microsoft.aspnetcore.app.internal.assets.10.0.12.nupkg.sha512"
+  ],
+  "logs": []
+}
